@@ -1,0 +1,28 @@
+services:
+  # dbs:
+  #   image: mysql:8.0.32
+  #   restart: always 
+  #   environment:
+  #     MYSQL_DATABASE: escrowapp
+  #     MYSQL_PASSWORD: root
+  #     MYSQL_ROOT_PASSWORD: root
+  #   volumes:
+  #     - .dbdata:/var/lib/mysql
+  #   ports:
+  #     - 33080:3306
+
+  backend_admin:
+    build: .
+    command: python manage.py runserver 0.0.0.0:5050
+    volumes:
+      - .:/app
+    ports:
+      - "5050:5050"
+    # environment:
+    #   - MYSQL_DATABASE=escrowapp
+    #   - MYSQL_PASSWORD=root
+    #   - MYSQL_USER=root
+    #   - MYSQL_ROOT_PASSWORD=root
+    # depends_on:
+    #   dbs:
+    #     condition: service_started
