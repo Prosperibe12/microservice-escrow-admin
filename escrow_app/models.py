@@ -22,7 +22,7 @@ class MyUserManager(BaseUserManager):
         return user
 
     def create_user(self, email=None, **extra_fields):
-        extra_fields.setdefault("is_staff", False)
+        extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", False)
         return self._create_user(email, **extra_fields)
 
@@ -35,7 +35,7 @@ class MyUserManager(BaseUserManager):
         if extra_fields.get("is_superuser") is not True:
             raise ValueError("Superuser must have is_superuser=True.")
 
-        return self._create_user(email, password, **extra_fields)
+        return self._create_user(email, **extra_fields)
 
 class Role(models.Model):
     Role_id = models.AutoField(primary_key=True)
@@ -55,7 +55,7 @@ class User(HelperModel,AbstractBaseUser,PermissionsMixin):
     email = models.EmailField(blank=False, null=False, unique=True)
     phone_number = models.CharField(blank=False, null=False, max_length=14)
     Role = models.ForeignKey(Role, on_delete=models.CASCADE, blank=True, null=True)
-    is_staff = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
     objects = MyUserManager()
 
@@ -72,3 +72,20 @@ class User(HelperModel,AbstractBaseUser,PermissionsMixin):
             'refresh': str(tokens),
             'access': str(tokens.access_token)
         }
+        
+#####################################################################################
+class AppUsers(HelperModel):
+    """
+    A Model that implements APP Users Details
+    """
+    app_user = models.AutoField(blank=True, null=False,primary_key=True)
+    email = models.EmailField(blank=True, null=True, unique=True)
+    reference_id = models.IntegerField(blank=True, null=True, unique=True)
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    is_verified = models.BooleanField(default=False)
+    is_updated = models.BooleanField(default=False)
+    date_joined = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.email}"
