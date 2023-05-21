@@ -7,10 +7,21 @@ services:
       - .:/app
     ports:
       - "5050:5050"
+  
+  redis:
+    image: redis
+    ports:
+      - 6380:6379
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
       
   admin_celery:
     build: .
-    command: celery -A project_core worker --loglevel=INFO
+    command: celery -A project_core worker --without-gossip --loglevel=INFO
+    # env_file:
+    #   - ./.env
+    # depends_on:
+    #   - redis
 
   admin_queue:
     build: .

@@ -18,3 +18,15 @@ class UserAdmin(admin.ModelAdmin):
         'is_active',
     )
 admin.site.register(models.User, UserAdmin)
+
+class AppUserAdmin(admin.ModelAdmin):
+    list_display = (
+        'app_user',
+        'email',
+        'reference_id',
+        'is_verified',
+        'is_updated',
+        'is_staff',
+        'is_active',
+    )
+admin.site.register(models.AppUsers, AppUserAdmin)

@@ -6,6 +6,7 @@ __pycache__/
 # C extensions
 *.so
 .dbdata
+redis.conf
 # Distribution / packaging
 .Python
 build/
